@@ -28,9 +28,8 @@ class GenerateNetherIslandCommand extends Command {
                 return true;
             }
             $seed = 0;
-            $generator = "netherisland";
             Main::getInstance()->getServer()->broadcastMessage(Main::PREFIX . ("Eine Welt wird erstellt. (Lag)"));
-            Main::getInstance()->getServer()->generateLevel($world, $seed, $generator);
+            Main::getInstance()->getServer()->generateLevel($world, $seed, GeneratorManager::getGenerator('netherisland'));
             Main::getInstance()->getServer()->loadLevel($world);
             return true;
         } else {

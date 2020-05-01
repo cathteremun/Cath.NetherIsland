@@ -10,7 +10,7 @@ use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
-class GlowstoneSphere extends Populator {
+class GlowstoneS extends Populator {
 
     public const SPHERE_RADIUS = 3;
 
