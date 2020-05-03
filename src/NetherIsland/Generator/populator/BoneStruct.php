@@ -51,11 +51,6 @@ class BoneStruct extends Populator {
         }
     }
 
-    /**
-     * @param $x
-     * @param $z
-     * @return int
-     */
     private function getHighestWorkableBlock($x, $z) {
         for ($y = 127; $y >= 0; --$y) {
             $b = $this->level->getBlockIdAt($x, $y, $z);

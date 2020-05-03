@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace NetherIsland\Generator;
 
 use NetherIsland\Generator\populator\BoneStruct;
-use NetherIsland\Generator\populator\GlowstoneS;
 use pocketmine\block\Block;
+use pocketmine\block\Glowstone;
 use pocketmine\block\Gravel;
 use pocketmine\block\Lava;
 use pocketmine\block\NetherQuartzOre;
@@ -16,7 +16,7 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\object\OreType;
-use pocketmine\level\generator\populator\Ore;
+use NetherIsland\Generator\populator\Ore;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
@@ -29,13 +29,13 @@ class NetherIsland extends Generator{
     /** @var Populator[] */
     private $populators = [];
     /** @var int */
-    private $waterHeight = 0;
+    private $waterHeight = 5;
     /** @var int */
     private $emptyHeight = 32;
     /** @var int */
     private $emptyAmplitude = 1;
     /** @var float */
-    private $density = 0.6;
+    private $density = 0.3;
 
     /** @var Populator[] */
     private $generationPopulators = [];
@@ -43,7 +43,7 @@ class NetherIsland extends Generator{
     private $noiseBase;
 
     private static $GAUSSIAN_KERNEL = null;
-    private static $SMOOTH_SIZE = 2;
+    private static $SMOOTH_SIZE = 4;
 
     public function __construct(array $options = []){
         if(self::$GAUSSIAN_KERNEL === null){
@@ -56,16 +56,19 @@ class NetherIsland extends Generator{
 
         $this->random->setSeed($this->level->getSeed());
         $this->noiseBase = new Simplex($this->random, 4, 1 / 4, 1 / 64);
-        $this->populators[0] = new BoneStruct();
-        $this->populators[1] = new GlowstoneS();
+        /*$bone = new BoneStruct();
+        $bone->setBaseAmount(0);
+        $bone->setRandomAmount(0);
+        $this->populators[0] = $bone;*/
         $ores = new Ore();
         $ores->setOreTypes([
+            new OreType(new Glowstone(), 4, 6, 0, 128),
             new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
             new OreType(new SoulSand(), 5, 64, 0, 128),
             new OreType(new Gravel(), 5, 64, 0, 128),
-            new OreType(new Lava(), 1, 16, 0, $this->waterHeight)
+            new OreType(new Lava(), 4, 16, 0, $this->waterHeight)
         ]);
-        $this->populators[2] = $ores;
+        $this->populators[0] = $ores;
     }
 
     private static function generateKernel(){
@@ -128,6 +131,8 @@ class NetherIsland extends Generator{
 
                     if($noiseValue < 0 && $distance < 100 or $noiseValue < -0.2 && $distance > 400){
                         $chunk->setBlock($x, $y, $z, Block::NETHERRACK, 0);
+                    } elseif($y <= $this->waterHeight){
+                        $chunk->setBlock($x, $y, $z, Block::STILL_LAVA, 0);
                     }
                 }
             }
