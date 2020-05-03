@@ -35,7 +35,7 @@ class NetherIsland extends Generator{
     /** @var int */
     private $emptyAmplitude = 1;
     /** @var float */
-    private $density = 0.3;
+    private $density = 0.78;
 
     /** @var Populator[] */
     private $generationPopulators = [];
@@ -62,11 +62,11 @@ class NetherIsland extends Generator{
         $this->populators[0] = $bone;*/
         $ores = new Ore();
         $ores->setOreTypes([
-            new OreType(new Glowstone(), 4, 6, 0, 128),
+            new OreType(new Glowstone(), 5, 8, 0, 128),
             new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
             new OreType(new SoulSand(), 5, 64, 0, 128),
             new OreType(new Gravel(), 5, 64, 0, 128),
-            new OreType(new Lava(), 4, 16, 0, $this->waterHeight)
+            new OreType(new Lava(1), 4, 16, 0, 128)
         ]);
         $this->populators[0] = $ores;
     }
@@ -132,7 +132,11 @@ class NetherIsland extends Generator{
                     if($noiseValue < 0 && $distance < 100 or $noiseValue < -0.2 && $distance > 400){
                         $chunk->setBlock($x, $y, $z, Block::NETHERRACK, 0);
                     } elseif($y <= $this->waterHeight){
-                        $chunk->setBlock($x, $y, $z, Block::STILL_LAVA, 0);
+                        if($y != 1) {
+                            $chunk->setBlock($x, $y, $z, Block::STILL_LAVA, 0);
+                        } else {
+                            $chunk->setBlock($x, $y, $z, Block::BEDROCK, 0);
+                        }
                     }
                 }
             }
