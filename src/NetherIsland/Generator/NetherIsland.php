@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace NetherIsland\Generator;
 
-use NetherIsland\Generator\populator\BoneStruct;
 use pocketmine\block\Block;
 use pocketmine\block\Glowstone;
 use pocketmine\block\Gravel;
 use pocketmine\block\Lava;
+use pocketmine\block\Magma;
 use pocketmine\block\NetherQuartzOre;
 use pocketmine\block\SoulSand;
 use pocketmine\level\biome\Biome;
@@ -35,7 +35,7 @@ class NetherIsland extends Generator{
     /** @var int */
     private $emptyAmplitude = 1;
     /** @var float */
-    private $density = 0.78;
+    private $density = 0.87;
 
     /** @var Populator[] */
     private $generationPopulators = [];
@@ -56,19 +56,17 @@ class NetherIsland extends Generator{
 
         $this->random->setSeed($this->level->getSeed());
         $this->noiseBase = new Simplex($this->random, 4, 1 / 4, 1 / 64);
-        /*$bone = new BoneStruct();
-        $bone->setBaseAmount(0);
-        $bone->setRandomAmount(0);
-        $this->populators[0] = $bone;*/
+
         $ores = new Ore();
         $ores->setOreTypes([
-            new OreType(new Glowstone(), 5, 8, 0, 128),
+            new OreType(new Glowstone(), 5, 16, 0, 128),
             new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
             new OreType(new SoulSand(), 5, 64, 0, 128),
             new OreType(new Gravel(), 5, 64, 0, 128),
-            new OreType(new Lava(1), 4, 16, 0, 128)
+            new OreType(new Lava(1), 4, 16, 0, 128),
+            new OreType(new Magma(),5, 42, 0, 128)
         ]);
-        $this->populators[0] = $ores;
+        $this->populators[] = $ores;
     }
 
     private static function generateKernel(){
