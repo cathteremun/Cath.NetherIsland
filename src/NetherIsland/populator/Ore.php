@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NetherIsland\Generator\populator;
+namespace NetherIsland\populator;
 
 use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;

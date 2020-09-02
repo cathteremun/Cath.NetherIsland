@@ -1,6 +1,6 @@
 <?php
 
-namespace NetherIsland\Commands;
+namespace NetherIsland\commands;
 
 use NetherIsland\Main;
 use pocketmine\command\Command;
@@ -8,8 +8,6 @@ use pocketmine\command\CommandSender;
 use pocketmine\level\generator\GeneratorManager;
 
 class GenerateNetherIslandCommand extends Command {
-
-    private $name;
 
     public function __construct() {
         parent::__construct("generateni");
