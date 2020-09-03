@@ -61,6 +61,7 @@ class NetherIsland extends Generator {
 
         $selector = new class($this->random->nextRange(2, 13)) extends BiomeSelector {
             protected function lookup(float $height, float $temperature, float $rainfall) : int{
+
                 if($temperature < 12) {
                     Main::HELLFIRE;
                 } else if($temperature < 6) {
