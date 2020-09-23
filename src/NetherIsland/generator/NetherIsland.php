@@ -59,21 +59,33 @@ class NetherIsland extends Generator {
         $this->random->setSeed(0);
         $this->noiseBase = new Simplex($this->random, 4, 1 / 4, 1 / 64);
 
-        $selector = new class($this->random->nextRange(2, 13)) extends BiomeSelector {
+        $selector = new class($this->random) extends BiomeSelector {
             protected function lookup(float $height, float $temperature, float $rainfall) : int{
-
-                if($temperature < 12) {
-                    Main::HELLFIRE;
-                } else if($temperature < 6) {
+                if($height < 0.50){
                     return Main::BONEFIELDS;
-                } else if($temperature < 5) {
-                    return Main::HELLTREES;
-                } else if($temperature < 4) {
-                    return Main::SHARPROCKS;
-                } else if($temperature < 3) {
-                    return Biome::HELL;
+                }elseif($height < 0.57){
+                    return Main::BONEFIELDS;
+                }elseif($height < 0.60){
+                    return Main::HELLFIRE;
+                }elseif($height < 0.63){
+                    return Main::HELLFIRE;
+                }else{
+                    if($temperature < 0.30){
+                        if($rainfall < 0.67){
+                            return Main::HELLFIRE;
+                        }else{
+                            return Biome::HELL;
+                        }
+                    }elseif($temperature < 0.70){
+                        if($rainfall < 0.67){
+                            return Biome::HELL;
+                        }else{
+                            return Biome::HELL;
+                        }
+                    }else{
+                        return Main::BONEFIELDS;
+                    }
                 }
-                return Biome::HELL;
             }
         };
         $selector->recalculate ();
