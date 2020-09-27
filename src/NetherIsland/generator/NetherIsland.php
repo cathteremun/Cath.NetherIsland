@@ -160,7 +160,7 @@ class NetherIsland extends Generator {
                 $biome->setGroundCover([
                     Block::get(Block::BEDROCK, 0)
                 ]);
-                $chunk->setBiomeId($x, $z, $biome->getId());
+                $chunk->setBiomeId($x, $z, Biome::HELL);
                 $color = [0, 0, 0];
                 $bColor = 2;
                 $color[0] += (($bColor >> 16) ** 2);
