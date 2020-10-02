@@ -8,6 +8,7 @@ use NetherIsland\Main;
 use pocketmine\block\{Block, Glowstone, Gravel, Lava, Magma, NetherQuartzOre, SoulSand};
 use NetherIsland\populator\BoneStruct;
 use NetherIsland\populator\HellFires;
+use NetherIsland\populator\StoneOfKnowledge;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
@@ -61,6 +62,11 @@ class NetherIsland extends Generator {
         $fire->setBaseAmount(0);
         $fire->setRandomAmount(1);
         $this->populators[] = $fire;
+
+        $sok = new StoneOfKnowledge();
+        $sok->setRandomAmount(0);
+        $sok->setBaseAmount(1);
+        $this->populators[] = $sok;
 
         $ores = new Ore();
         $ores->setOreTypes([
