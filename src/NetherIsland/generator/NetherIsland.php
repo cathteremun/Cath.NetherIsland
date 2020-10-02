@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace NetherIsland\generator;
 
-use NetherIsland\biome\{BoneFields, HellFire, HellTrees, SharpRocks};
 use NetherIsland\Main;
 use pocketmine\block\{Block, Glowstone, Gravel, Lava, Magma, NetherQuartzOre, SoulSand};
 use NetherIsland\populator\BoneStruct;
+use NetherIsland\populator\HellFires;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
@@ -43,13 +43,6 @@ class NetherIsland extends Generator {
 
         Biome::init();
 
-        $reflect = new ReflectionMethod(Biome::class, 'register');
-        $reflect->setAccessible(true);
-
-        $reflect->invoke(null, Main::BONEFIELDS, new BoneFields());
-        $reflect->invoke(null, Main::HELLFIRE, new HellFire());
-        $reflect->invoke(null, Main::SHARPROCKS, new SharpRocks());
-        $reflect->invoke(null, Main::HELLTREES, new HellTrees());
         $this->options = $options;
     }
 
@@ -64,13 +57,18 @@ class NetherIsland extends Generator {
         $bone->setBaseAmount(0);
         $this->populators[] = $bone;
 
+        $fire = new HellFires();
+        $fire->setBaseAmount(0);
+        $fire->setRandomAmount(1);
+        $this->populators[] = $fire;
+
         $ores = new Ore();
         $ores->setOreTypes([
             new OreType(new Glowstone(), 5, 16, 0, 128),
             new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
             new OreType(new SoulSand(), 5, 64, 0, 128),
             new OreType(new Gravel(), 5, 64, 0, 128),
-            new OreType(new Lava(1), 4, 16, 0, 128),
+            new OreType(new Lava(), 4, 16, 0, 128),
             new OreType(new Magma(),5, 42, 0, 128)
         ]);
         $this->populators[] = $ores;

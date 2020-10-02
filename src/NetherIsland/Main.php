@@ -14,11 +14,6 @@ class Main extends PluginBase {
     const PREFIX = "§6Cat§fhesda§8 >§f ";
     const NO_PERMISSIONS = "§4Du hast nicht die benötigten Berechtigungen für diesen Befehl";
 
-    public const BONEFIELDS = 101;
-    public const HELLFIRE = 102;
-    public const SHARPROCKS = 103;
-    public const HELLTREES = 104;
-
     private static $instance;
 
     public function onLoad() {

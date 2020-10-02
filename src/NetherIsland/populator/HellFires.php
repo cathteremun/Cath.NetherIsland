@@ -32,14 +32,17 @@ class HellFires extends Populator{
             if($y === -1){
                 continue;
             }
-            ObjectFire::placeObject($this->level, $x, $y, $z, $random);
+            $level->setBlockIdAt($x, $y, $z, Block::FIRE);
         }
     }
+
     private function getHighestWorkableBlock(int $x, int $z) : int{
         for($y = 127; $y > 0; --$y){
             $b = $this->level->getBlockIdAt($x, $y, $z);
             if($b === Block::NETHERRACK){
-                return +1;
+                break;
+            } elseif($b !== Block::AIR){
+                return -1;
             }
         }
         return ++$y;
