@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace NetherIsland\generator;
 
-use NetherIsland\biome\{BiomeSelector, BoneFields, HellFire, HellTrees, SharpRocks};
+use NetherIsland\biome\{BoneFields, HellFire, HellTrees, SharpRocks};
 use NetherIsland\Main;
 use pocketmine\block\{Block, Glowstone, Gravel, Lava, Magma, NetherQuartzOre, SoulSand};
+use NetherIsland\populator\BoneStruct;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
@@ -52,43 +53,16 @@ class NetherIsland extends Generator {
         $this->options = $options;
     }
 
-
     public function init(ChunkManager $level, Random $random) : void {
         parent::init($level, $random);
 
         $this->random->setSeed(0);
         $this->noiseBase = new Simplex($this->random, 4, 1 / 4, 1 / 64);
 
-        $selector = new class($this->random) extends BiomeSelector {
-            protected function lookup(float $height, float $temperature, float $rainfall) : int{
-                if($height < 0.50){
-                    return Main::BONEFIELDS;
-                }elseif($height < 0.57){
-                    return Main::BONEFIELDS;
-                }elseif($height < 0.60){
-                    return Main::HELLFIRE;
-                }elseif($height < 0.63){
-                    return Main::HELLFIRE;
-                }else{
-                    if($temperature < 0.30){
-                        if($rainfall < 0.67){
-                            return Main::HELLFIRE;
-                        }else{
-                            return Biome::HELL;
-                        }
-                    }elseif($temperature < 0.70){
-                        if($rainfall < 0.67){
-                            return Biome::HELL;
-                        }else{
-                            return Biome::HELL;
-                        }
-                    }else{
-                        return Main::BONEFIELDS;
-                    }
-                }
-            }
-        };
-        $selector->recalculate ();
+        $bone = new BoneStruct();
+        $bone->setRandomAmount(1);
+        $bone->setBaseAmount(0);
+        $this->populators[] = $bone;
 
         $ores = new Ore();
         $ores->setOreTypes([
@@ -120,7 +94,7 @@ class NetherIsland extends Generator {
     }
 
     public function getName() : string {
-        return "netherisland";
+        return "sb-nether";
     }
 
     public function getWaterHeight() : int {
@@ -132,18 +106,7 @@ class NetherIsland extends Generator {
     }
 
     public function pickBiome() : int {
-        switch ($this->random->nextRange(0,4)) {
-            case 0:
-                return Biome::HELL;
-            case 1:
-                return Main::BONEFIELDS;
-            case 2:
-                return Main::HELLFIRE;
-            case 3:
-                return Main::SHARPROCKS;
-            case 4:
-                return Main::HELLTREES;
-        }
+        return Biome::HELL;
     }
 
     public function generateChunk(int $chunkX, int $chunkZ) : void{

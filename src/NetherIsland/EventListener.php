@@ -26,7 +26,7 @@ class EventListener implements Listener {
 
             $getDimension = function ($generator): int {
                 switch ($generator) {
-                    case "netherisland":
+                    case "sb-nether":
                     case "nether":
                         return 1;
                     case "ender":
@@ -52,7 +52,7 @@ class EventListener implements Listener {
 
         $getDimension = function ($generator): int {
             switch ($generator) {
-                case "ni":
+                case "sb-nether":
                 case "nether":
                     return 1;
                 case "ender":

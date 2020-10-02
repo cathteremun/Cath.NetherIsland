@@ -22,7 +22,7 @@ class Main extends PluginBase {
     private static $instance;
 
     public function onLoad() {
-        GeneratorManager::addGenerator(NetherIsland::class, "netherisland");
+        GeneratorManager::addGenerator(NetherIsland::class, "sb-nether");
         self::$instance = $this;
     }
 
