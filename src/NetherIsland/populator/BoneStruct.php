@@ -32,15 +32,16 @@ class BoneStruct extends Populator{
             if($y === -1){
                 continue;
             }
-            ObjectBones::placeObject($this->level, $x, $y, $z, $random);
+            ObjectBones::placeObject($this->level, $x, $y -1, $z, $random);
         }
     }
+
     private function getHighestWorkableBlock(int $x, int $z) : int{
         for($y = 127; $y > 0; --$y){
             $b = $this->level->getBlockIdAt($x, $y, $z);
             if($b === Block::NETHERRACK){
-                return -1;
-            }elseif($b !== Block::AIR and $b){
+                break;
+            } elseif($b !== Block::AIR){
                 return -1;
             }
         }

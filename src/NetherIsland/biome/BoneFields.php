@@ -12,8 +12,8 @@ class BoneFields extends Biome{
 
     public function __construct(){
         $pt = new BoneStruct();
-        $pt->setBaseAmount(0);
-        $pt->setRandomAmount(1);
+        $pt->setBaseAmount(1);
+        $pt->setRandomAmount(2);
         $this->addPopulator($pt);
 
         $this->temperature = 6;
