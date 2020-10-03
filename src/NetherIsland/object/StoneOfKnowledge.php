@@ -10,11 +10,19 @@ class StoneOfKnowledge {
 
     public static function placeObject(ChunkManager $level, int $x, int $y, int $z, Random $random) : void {
         if($random->nextRange(0,5) === 1) {
-            for ($nx = $x + 2; $nx > $x - 1; $nx--) {
-                for ($nz = $z + 2; $nx > $z - 1; $nz--) {
-                    $level->setBlockIdAt($nx, $y, $nz, 122);
-                }
-            }
+            //Base
+            $level->setBlockIdAt($x + 0, $y, $z, Block::NETHER_BRICK_BLOCK);
+            $level->setBlockIdAt($x + 1, $y, $z, Block::NETHER_BRICK_BLOCK);
+            $level->setBlockIdAt($x + 2, $y, $z, Block::NETHER_BRICK_BLOCK);
+
+            $level->setBlockIdAt($x + 0, $y, $z + 1, Block::NETHER_BRICK_BLOCK);
+            $level->setBlockIdAt($x + 1, $y, $z + 1, Block::NETHER_BRICK_BLOCK);
+            $level->setBlockIdAt($x + 2, $y, $z + 1, Block::NETHER_BRICK_BLOCK);
+
+            $level->setBlockIdAt($x + 0, $y, $z + 2, Block::NETHER_BRICK_BLOCK);
+            $level->setBlockIdAt($x + 1, $y, $z + 2, Block::NETHER_BRICK_BLOCK);
+            $level->setBlockIdAt($x + 2, $y, $z + 2, Block::NETHER_BRICK_BLOCK);
+
             for ($nx = $x + 2; $nx > $x - 1;) {
                 $level->setBlockIdAt($nx, $y, $z - 1, Block::STONE_SLAB);
                 $level->setBlockIdAt($nx, $y, $z + 3, Block::STONE_SLAB);
