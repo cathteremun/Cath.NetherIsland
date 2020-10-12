@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace NetherIsland\generator;
 
-use NetherIsland\Main;
 use pocketmine\block\{Block, Glowstone, Gravel, Lava, Magma, NetherQuartzOre, SoulSand};
+
 use NetherIsland\populator\BoneStruct;
 use NetherIsland\populator\HellFires;
+use NetherIsland\populator\Ruine;
 use NetherIsland\populator\StoneOfKnowledge;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
@@ -18,7 +19,6 @@ use NetherIsland\populator\Ore;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
-use ReflectionMethod;
 use function exp;
 use function abs;
 
@@ -27,7 +27,7 @@ class NetherIsland extends Generator {
     protected $level;
     private $populators = [ ];
     private $generationPopulators = [];
-    private $waterHeight = 5;
+    private $waterHeight = 8;
     private $emptyHeight = 32;
     private $emptyAmplitude = 1;
     private $density = 0.87;
@@ -63,21 +63,26 @@ class NetherIsland extends Generator {
         $fire->setRandomAmount(1);
         $this->populators[] = $fire;
 
-        $sok = new StoneOfKnowledge();
-        $sok->setRandomAmount(0);
-        $sok->setBaseAmount(1);
-        $this->populators[] = $sok;
-
         $ores = new Ore();
         $ores->setOreTypes([
             new OreType(new Glowstone(), 5, 16, 0, 128),
             new OreType(new NetherQuartzOre(), 20, 16, 0, 128),
             new OreType(new SoulSand(), 5, 64, 0, 128),
-            new OreType(new Gravel(), 5, 64, 0, 128),
-            new OreType(new Lava(), 4, 16, 0, 128),
+            new OreType(new Gravel(), 5, 38, 0, 128),
+            new OreType((new Lava())->getFlowingForm(), 4, 16, 0, 128), //FIXME
             new OreType(new Magma(),5, 42, 0, 128)
         ]);
         $this->populators[] = $ores;
+
+        $sok = new StoneOfKnowledge();
+        $sok->setRandomAmount(0);
+        $sok->setBaseAmount(1);
+        $this->populators[] = $sok;
+
+        $ruine = new Ruine();
+        $ruine->setBaseAmount(1);
+        $ruine->setRandomAmount(0);
+        $this->populators[] = $ruine;
     }
 
     private static function generateKernel(){
@@ -172,7 +177,7 @@ class NetherIsland extends Generator {
     }
 
     public function getSpawn() : Vector3 {
-        return new Vector3(48, 128, 48);
+        return new Vector3(235, 40, 355);
     }
 
 }

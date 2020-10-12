@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace NetherIsland;
@@ -26,7 +25,7 @@ class Main extends PluginBase {
         $this->getServer()->getCommandMap()->register("generateni", new GenerateNetherIslandCommand);
     }
 
-    public static function getInstance(): Main {
+    public static function getInstance() : Main {
         return self::$instance;
     }
 }

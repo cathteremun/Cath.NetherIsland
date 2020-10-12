@@ -7,6 +7,7 @@ namespace NetherIsland;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
 use pocketmine\Player;
 
@@ -48,7 +49,6 @@ class EventListener implements Listener {
 
     public function onPlayerDeath(PlayerDeathEvent $event) {
         $player = $event->getPlayer();
-
 
         $getDimension = function ($generator): int {
             switch ($generator) {
