@@ -3,10 +3,12 @@
 namespace NetherIsland\object;
 
 use pocketmine\block\Block;
+use pocketmine\item\Item;
+use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\level\ChunkManager;
 use pocketmine\utils\Random;
 
-class Ruine{
+class Ruine extends PopulatorObject {
 
     public static function placeRuine(ChunkManager $level, int $x, int $y, int $z, Random $random) : void {
         if($random->nextRange(0, 7) === 1) {
@@ -61,7 +63,7 @@ class Ruine{
             self::getRandomWallBlock($level, $x + 4, $y + 1, $z + 4, $random->nextRange(0, 2));
 
             //Chest
-            $level->setBlockIdAt($x + 2, $y + 1, $z + 2, Block::CHEST);
+            $level->setBlockIdAt($x + 2, $y + 1, $z + 2, Block::GLOWING_OBSIDIAN);
         }
     }
 

@@ -36,6 +36,7 @@ class Ruine extends Populator{
         }
     }
 
+
     private function getHighestWorkableBlock(int $x, int $z) : int{
         for($y = 127; $y > 0; --$y){
             if($this->level->getBlockIdAt($x, $y, $z) === Block::NETHERRACK and $this->level->getBlockIdAt($x + 4, $y, $z) === Block::NETHERRACK){
