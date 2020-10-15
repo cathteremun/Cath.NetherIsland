@@ -9,17 +9,13 @@ use pocketmine\level\generator\GeneratorManager;
 
 class GenerateNetherIslandCommand extends Command {
 
-    /*
-     * TODO: Change
-     */
-
     public function __construct() {
-        parent::__construct("generateni");
+        parent::__construct("nethertest");
         $this->setDescription("Generiert eine NetherIsland Welt");
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args) {
-        if ($sender->hasPermission('netherisland.generate')) {
+        if ($sender->hasPermission('netherisland.admin.generate')) {
             if (count($args) < 1) {
                 return false;
             }

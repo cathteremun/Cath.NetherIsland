@@ -26,7 +26,8 @@ class Main extends PluginBase {
     public function onEnable() {
         $chestData = (new Config($this->getDataFolder() . "loot.yml", Config::YAML))->get("chest");
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this, $chestData), $this);
-        $this->getServer()->getCommandMap()->register("generateni", new GenerateNetherIslandCommand);
+        $this->getServer()->getCommandMap()->register("nethertest", new GenerateNetherIslandCommand);
+        //$this->getServer()->getCommandMap()->register("nether", new NetherIslandCommand());
     }
 
     public static function getInstance() {
