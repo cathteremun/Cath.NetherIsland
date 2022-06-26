@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace NetherIsland;
 
-use NetherIsland\lib\FormAPI\SimpleForm;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\item\Item;
-use pocketmine\level\Explosion;
-use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
+use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\player\Player;
+use pocketmine\world\Explosion;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
-use pocketmine\Player;
 use pocketmine\utils\Random;
 
 class EventListener implements Listener {
@@ -26,55 +25,39 @@ class EventListener implements Listener {
         $this->plugin = $plugin;
         $this->chestData = $chestData;
     }
-
-    public function onLevelChange(EntityLevelChangeEvent $event) {
+    //API 4.5.2 Fix
+    public function onWorldChange(EntityTeleportEvent $event) {
         $entity = $event->getEntity();
+
         if($entity instanceof Player) {
-            $originGenerator = $event->getOrigin()->getProvider()->getGenerator();
-            $targetGenerator = $event->getTarget()->getProvider()->getGenerator();
+            $originGenerator = $event->getFrom()->getWorld()->getProvider()->getWorldData()->getGenerator();
+            $targetGenerator = $event->getTo()->getWorld()->getProvider()->getWorldData()->getGenerator();
 
-            $getDimension = function ($generator): int {
-                switch ($generator) {
-                    case "sb-nether":
-                    case "nether":
-                        return 1;
-                    case "ender":
-                        return 2;
-                    default:
-                        return 0;
-                }
-            };
-
-            if($getDimension($originGenerator) == $getDimension($targetGenerator)) return;
+            if($this->getDimensionId($originGenerator) == $this->getDimensionId($targetGenerator)) return;
 
             $pk = new ChangeDimensionPacket();
-            $pk->dimension = $getDimension($targetGenerator);
-            $pk->position = $event->getTarget()->getSpawnLocation();
+            $pk->dimension = $this->getDimensionId($targetGenerator);
+            $pk->position = $event->getTo()->getWorld()->getSpawnLocation();
 
-            $entity->dataPacket($pk);
+            $entity->getNetworkSession()->sendDataPacket($pk);
         }
     }
 
-    public function onPlayerDeath(PlayerDeathEvent $event) {
-        $player = $event->getPlayer();
-
-        $getDimension = function ($generator): int {
-            switch ($generator) {
-                case "sb-nether":
-                case "nether":
-                    return 1;
-                case "ender":
-                    return 2;
-                default:
-                    return 0;
-            }
-        };
-
-        if($getDimension($player->getLevel()->getProvider()->getGenerator()) !== 0) {
-            $player->teleport($this->plugin->getServer()->getDefaultLevel()->getSafeSpawn());
-            return;
+    public function getDimensionId(string $generator) : int {
+        switch ($generator) {
+            case "tnether":
+            case "nether":
+                return 1;
+            case "ender":
+            case "end":
+                return 2;
+            default:
+                return 0;
         }
     }
+
+    //Probably not working anymore
+    /*
     public function onBreakNetherReactor(BlockBreakEvent $event) {
         $block = $event->getBlock();
         if($block->getId() === Block::NETHERREACTOR) {
@@ -96,21 +79,8 @@ class EventListener implements Listener {
 
     public function interactNetherReactor(PlayerInteractEvent $event) {
         $block = $event->getBlock();
-        if($block->getId() === Block::NETHERREACTOR) {
-            $form = new SimpleForm(function (Player $player, $data) {
-                if ($data === null) {
-                    return;
-                }
-                switch ($data) {
-                    default:
-                        break;
-                }
-                return;
-            });
-            $form->setTitle("Allwissender §kUnbekannt");
-            $form->setContent("§kDu lernst in der Nethersprache das Wort: für ...§r\nIch kann diese Sprache nicht entziffern.");
-            $form->addButton("Weggehen");
-            $form->sendToPlayer($event->getPlayer());
+        if($block->getId() == VanillaBlocks::NETHER_REACTOR_CORE()) {
+            $event->getPlayer()->sendMessage("Something tells you that this will have a deeper thought");
         }
     }
 
@@ -157,4 +127,5 @@ class EventListener implements Listener {
             $player->getInventory()->addItem(Item::get($item, 0, $amount));
         }
     }
+    */
 }
